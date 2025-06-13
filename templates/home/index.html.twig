@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FoodPro - Catalogue des plats</title>
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+  </head>
+  <body>
+    <header>
+      <h1>FoodPro</h1>
+    </header>
+
+    <div class="banner">
+      <h2>Catalogue des plats</h2>
+    </div>
+
+    <div class="filters-container">
+      <div class="search-section">
+        <label for="search">Rechercher</label>
+        <input type="text" id="search" placeholder="Nom du plat..." value="{{ search }}" />
+      </div>
+
+      <div class="categories-section">
+        <label>Catégories</label>
+        <div class="buttons-group">
+          <button class="category-btn {{ category == 'all' ? 'active' : '' }}" data-category="all">
+            Toutes
+          </button>
+          <button class="category-btn {{ category == 'entrees' ? 'active' : '' }}" data-category="entrees">Entrées</button>
+          <button class="category-btn {{ category == 'plats' ? 'active' : '' }}" data-category="plats">Plats</button>
+        </div>
+        <button class="category-btn2 {{ category == 'desserts' ? 'active' : '' }}" data-category="desserts">Desserts</button>
+      </div>
+
+      <div class="sort-section">
+        <label>Trier par prix</label>
+        <div class="buttons-group">
+          <button class="sort-btn {{ sort == 'default' ? 'active' : '' }}" data-sort="default">Défaut</button>
+          <button class="sort-btn {{ sort == 'asc' ? 'active' : '' }}" data-sort="asc">Prix +</button>
+          <button class="sort-btn {{ sort == 'desc' ? 'active' : '' }}" data-sort="desc">Prix -</button>
+        </div>
+      </div>
+
+      <div class="display-section">
+        <label>Plats à afficher</label>
+        <div class="slider-container">
+          <input
+            type="range"
+            min="1"
+            max="{{ dishes|length }}"
+            value="{{ min(displayCount, dishes|length) }}"
+            class="slider"
+            id="display-count"
+          />
+          <span id="display-value">{{ min(displayCount, dishes|length) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <main>
+      <h2>Notre Catalogue</h2>
+      <br />
+      <br />
+      <p id="dishes-count">Affichage de {{ min(displayCount, dishes|length) }} plats</p>
+
+      <div id="dishes-container" class="dishes-container">
+        {% for dish in dishes %}
+          <div class="dish-card" data-id="{{ dish.id }}">
+            <h3 class="dish-name">{{ dish.name }}</h3>
+            <p class="dish-price">{{ dish.price }}</p>
+            <span class="dish-category">{{ dish.category }}</span>
+            <p class="dish-chef">Chef: {{ dish.owner.firstName }} {{ dish.owner.lastName }}</p>
+            {% if dish.description %}
+              <p class="dish-description">{{ dish.description }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </main>
+    {{ dump( dishes) }}
+
+    <script>
+      const dishes = {{ dishes|json_encode|raw }};
+    </script>
+    <script src="{{ asset('js/script.js') }}"></script>
+  </body>
+</html>

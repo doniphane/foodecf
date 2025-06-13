@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du plat{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">{{ dish.name }}</h1>
+                    <div class="mb-4">
+                        <h5 class="text-muted">{{ dish.category }}</h5>
+                        <p class="lead">Prix: {{ dish.price }}€</p>
+                        <p><strong>Chef:</strong> {{ dish.chef }}</p>
+                        {% if dish.description %}
+                            <p class="mt-3">{{ dish.description }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <a href="{{ path('app_home') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Retour à la liste
+                            </a>
+                        </div>
+                        {% if is_granted('ROLE_USER') %}
+                            <div>
+                                <a href="{{ path('app_dish_edit', {'id': dish.id}) }}" class="btn btn-warning">
+                                    <i class="fas fa-edit"></i> Modifier
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
