@@ -13,8 +13,7 @@ class HomeController extends AbstractController
 {
     public function __construct(
         private readonly SerializerInterface $serializer
-    ) {
-    }
+    ) {}
 
     #[Route('/', name: 'app_home')]
     public function index(Request $request, DishRepository $dishRepository): Response
@@ -31,7 +30,8 @@ class HomeController extends AbstractController
         );
 
         return $this->render('home/index.html.twig', [
-            'dishes' => $formattedDishes,
+            'dishes' => $dishes,
+            'formattedDishes' => $formattedDishes,
             'search' => $request->query->get('search', ''),
             'category' => $request->query->get('category', 'all'),
             'sort' => $request->query->get('sort', 'default'),

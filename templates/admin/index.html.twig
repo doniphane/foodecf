@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration des plats{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Administration des plats</h1>
+        <a href="{{ path('app_admin_new') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Ajouter un nouveau plat
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Prix</th>
+                            <th>Catégorie</th>
+                            <th>Propriétaire</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for dish in dishes %}
+                        <tr>
+                            <td>{{ dish.id }}</td>
+                            <td>{{ dish.name }}</td>
+                            <td>{{ dish.price }} €</td>
+                            <td>{{ dish.category }}</td>
+                            <td>{{ dish.owner.firstName }} {{ dish.owner.lastName }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="{{ path('app_admin_show', {'id': dish.id}) }}" class="btn btn-info btn-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ path('app_admin_edit', {'id': dish.id}) }}" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form method="post" action="{{ path('app_admin_delete', {'id': dish.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce plat ?');" style="display: inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ dish.id) }}">
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">Aucun plat trouvé</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

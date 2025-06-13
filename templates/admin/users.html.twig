@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Gestion des utilisateurs</h1>
+            <a href="{{ path('app_admin_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour au tableau de bord
+            </a>
+        </div>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Email</th>
+                                <th>Rôles</th>
+                                <th>Date de création</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.id }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>
+                                        {% for role in user.roles %}
+                                            <span class="badge bg-primary">{{ role }}</span>
+                                        {% endfor %}
+                                    </td>
+                                    <td>{{ user.createdAt|date('d/m/Y H:i') }}</td>
+                                    <td>
+                                        <form method="post" action="{{ path('app_admin_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');" style="display: inline-block">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                            <button class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Supprimer
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center">Aucun utilisateur trouvé</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %} 

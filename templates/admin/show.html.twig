@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du plat{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h3 mb-0">Détails du plat</h1>
+                <div class="btn-group">
+                    <a href="{{ path('app_admin_edit', {'id': dish.id}) }}" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Modifier
+                    </a>
+                    <form method="post" action="{{ path('app_admin_delete', {'id': dish.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce plat ?');" style="display: inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ dish.id) }}">
+                        <button class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <td>{{ dish.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ dish.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ dish.description }}</td>
+                    </tr>
+                    <tr>
+                        <th>Prix</th>
+                        <td>{{ dish.price }} €</td>
+                    </tr>
+                    <tr>
+                        <th>Catégorie</th>
+                        <td>{{ dish.category }}</td>
+                    </tr>
+                    <tr>
+                        <th>Propriétaire</th>
+                        <td>{{ dish.owner.firstName }} {{ dish.owner.lastName }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a href="{{ path('app_admin_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 
